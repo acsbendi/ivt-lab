@@ -79,21 +79,7 @@ public class GT4500 implements SpaceShip {
       case ALL:
         // try to fire both of the torpedo stores
         if(! secondaryTorpedoStore.isEmpty() && ! primaryTorpedoStore.isEmpty() ){
-          if(wasPrimaryFiredLast){
-            firingSuccess = secondaryTorpedoStore.fire(1);
-            if(firingSuccess){
-              firingSuccess = primaryTorpedoStore.fire(1);
-            }else{
-              wasPrimaryFiredLast = false;
-            }
-          }else{
-            firingSuccess = primaryTorpedoStore.fire(1);
-            if(firingSuccess){
-              firingSuccess = secondaryTorpedoStore.fire(1);
-            }else{
-              wasPrimaryFiredLast = true;
-            }
-          }
+          firingSuccess = primaryTorpedoStore.fire(1) || secondaryTorpedoStore.fire(1);
         }
 
         break;
