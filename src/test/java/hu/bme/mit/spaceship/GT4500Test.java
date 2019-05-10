@@ -34,6 +34,27 @@ public class GT4500Test {
   }
 
   @Test
+  public void fireTorpedo_Single_Twice_Success(){
+    // Arrange
+    for(TorpedoStore torpedoStore : mockTorpedoStores){
+      when(torpedoStore.isEmpty()).thenReturn(false);
+      when(torpedoStore.fire(1)).thenReturn(true);
+    }
+
+    // Act
+    boolean result1 = ship.fireTorpedo(FiringMode.SINGLE);
+    boolean result2 = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    assertEquals(true, result1);
+    assertEquals(true, result2);
+    for(TorpedoStore torpedoStore : mockTorpedoStores){
+      verify(torpedoStore, times(1)).isEmpty();
+      verify(torpedoStore, times(1)).fire(1);
+    }
+  }
+
+  @Test
   public void fireTorpedo_All_Success(){
     // Arrange
     for(TorpedoStore torpedoStore : mockTorpedoStores){
