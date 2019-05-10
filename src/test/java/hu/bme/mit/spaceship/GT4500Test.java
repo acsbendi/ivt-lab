@@ -170,6 +170,44 @@ public class GT4500Test {
   }
 
   @Test
+  public void fireTorpedo_All_First_Empty_Success(){
+    // Arrange
+    when(mockTorpedoStores[0].isEmpty()).thenReturn(true);
+    when(mockTorpedoStores[0].fire(1)).thenReturn(false);
+    when(mockTorpedoStores[1].isEmpty()).thenReturn(false);
+    when(mockTorpedoStores[1].fire(1)).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    assertEquals(true, result);
+    for(TorpedoStore torpedoStore : mockTorpedoStores){
+      verify(torpedoStore, times(1)).isEmpty();
+      verify(torpedoStore, times(1)).fire(1);
+    }
+  }
+
+  @Test
+  public void fireTorpedo_All_Failure(){
+    // Arrange
+    when(mockTorpedoStores[0].isEmpty()).thenReturn(true);
+    when(mockTorpedoStores[0].fire(1)).thenReturn(false);
+    when(mockTorpedoStores[1].isEmpty()).thenReturn(true);
+    when(mockTorpedoStores[1].fire(1)).thenReturn(false);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    assertEquals(false, result);
+    for(TorpedoStore torpedoStore : mockTorpedoStores){
+      verify(torpedoStore, times(1)).isEmpty();
+      verify(torpedoStore, times(0)).fire(1);
+    }
+  }
+
+  @Test
   public void fireLaser_All(){
     // Arrange
 
