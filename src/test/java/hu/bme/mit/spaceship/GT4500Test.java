@@ -80,14 +80,33 @@ public class GT4500Test {
     when(mockTorpedoStores[0].fire(1)).thenReturn(false);
 
     // Act
-    boolean result1 = ship.fireTorpedo(FiringMode.SINGLE);
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
 
     // Assert
-    assertEquals(false, result1);
+    assertEquals(false, result);
     verify(mockTorpedoStores[0], times(1)).isEmpty();
     verify(mockTorpedoStores[0], times(1)).fire(1);
     verify(mockTorpedoStores[1], times(0)).isEmpty();
     verify(mockTorpedoStores[1], times(0)).fire(1);
+  }
+
+  @Test
+  public void fireTorpedo_Single_First_Empty(){
+    // Arrange
+    when(mockTorpedoStores[0].isEmpty()).thenReturn(true);
+    when(mockTorpedoStores[0].fire(1)).thenReturn(false);
+    when(mockTorpedoStores[1].isEmpty()).thenReturn(false);
+    when(mockTorpedoStores[1].fire(1)).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    assertEquals(true, result);
+    verify(mockTorpedoStores[0], times(1)).isEmpty();
+    verify(mockTorpedoStores[0], times(0)).fire(1);
+    verify(mockTorpedoStores[1], times(1)).isEmpty();
+    verify(mockTorpedoStores[1], times(1)).fire(1);
   }
 
   @Test
