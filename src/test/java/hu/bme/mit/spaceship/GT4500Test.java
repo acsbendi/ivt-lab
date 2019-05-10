@@ -128,4 +128,15 @@ public class GT4500Test {
     }
   }
 
+  @Test
+  public void fireLaser_All(){
+    // Arrange
+
+    // Act
+    boolean result = ship.fireLaser(FiringMode.ALL);
+
+    // Assert
+    assertEquals(false, result);
+  }
+
 }
