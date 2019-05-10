@@ -30,6 +30,8 @@ public class GT4500Test {
 
     // Assert
     assertEquals(true, result);
+    verify(mockFirstTorpedoStore, times(1)).isEmpty();
+    verify(mockFirstTorpedoStore, times(1)).fire(1);
   }
 
   @Test
@@ -45,6 +47,10 @@ public class GT4500Test {
 
     // Assert
     assertEquals(true, result);
+    verify(mockFirstTorpedoStore, times(1)).isEmpty();
+    verify(mockFirstTorpedoStore, times(1)).fire(1);
+    verify(mockSecondTorpedoStore, times(1)).isEmpty();
+    verify(mockSecondTorpedoStore, times(1)).fire(1);
   }
 
 }
