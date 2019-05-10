@@ -9,48 +9,47 @@ import static org.mockito.Mockito.*;
 public class GT4500Test {
 
   private GT4500 ship;
-  private TorpedoStore mockFirstTorpedoStore;
-  private TorpedoStore mockSecondTorpedoStore;
+  private TorpedoStore[] mockTorpedoStores = new TorpedoStore[2];
 
   @BeforeEach
   public void init(){
-    this.mockFirstTorpedoStore = mock(TorpedoStore.class);
-    this.mockSecondTorpedoStore = mock(TorpedoStore.class);
-    this.ship = new GT4500(this.mockFirstTorpedoStore, this.mockSecondTorpedoStore);
+    this.mockTorpedoStores[0] = mock(TorpedoStore.class);
+    this.mockTorpedoStores[1] = mock(TorpedoStore.class);
+    this.ship = new GT4500(this.mockTorpedoStores[0], this.mockTorpedoStores[1]);
   }
 
   @Test
   public void fireTorpedo_Single_Success(){
     // Arrange
-    when(mockFirstTorpedoStore.isEmpty()).thenReturn(false);
-    when(mockFirstTorpedoStore.fire(1)).thenReturn(true);
+    when(mockTorpedoStores[0].isEmpty()).thenReturn(false);
+    when(mockTorpedoStores[0].fire(1)).thenReturn(true);
 
     // Act
     boolean result = ship.fireTorpedo(FiringMode.SINGLE);
 
     // Assert
     assertEquals(true, result);
-    verify(mockFirstTorpedoStore, times(1)).isEmpty();
-    verify(mockFirstTorpedoStore, times(1)).fire(1);
+    verify(mockTorpedoStores[0], times(1)).isEmpty();
+    verify(mockTorpedoStores[0], times(1)).fire(1);
   }
 
   @Test
   public void fireTorpedo_All_Success(){
     // Arrange
-    when(mockFirstTorpedoStore.isEmpty()).thenReturn(false);
-    when(mockFirstTorpedoStore.fire(1)).thenReturn(true);
-    when(mockSecondTorpedoStore.isEmpty()).thenReturn(false);
-    when(mockSecondTorpedoStore.fire(1)).thenReturn(true);
+    for(TorpedoStore torpedoStore : mockTorpedoStores){
+      when(torpedoStore.isEmpty()).thenReturn(false);
+      when(torpedoStore.fire(1)).thenReturn(true);
+    }
 
     // Act
     boolean result = ship.fireTorpedo(FiringMode.ALL);
 
     // Assert
     assertEquals(true, result);
-    verify(mockFirstTorpedoStore, times(1)).isEmpty();
-    verify(mockFirstTorpedoStore, times(1)).fire(1);
-    verify(mockSecondTorpedoStore, times(1)).isEmpty();
-    verify(mockSecondTorpedoStore, times(1)).fire(1);
+    for(TorpedoStore torpedoStore : mockTorpedoStores){
+      verify(torpedoStore, times(1)).isEmpty();
+      verify(torpedoStore, times(1)).fire(1);
+    }
   }
 
 }
